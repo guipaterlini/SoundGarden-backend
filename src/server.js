@@ -40,6 +40,10 @@ app.get("/events/:_id", (req, res) => {
 
   const evento = eventos.find((evento) => evento._id === _id);
 
+  if (!evento) {
+    return res.status(404).json({ message: "EVENT NOT FOUND" });
+  }
+
   return res.status(200).json({ evento });
 });
 
