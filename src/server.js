@@ -6,23 +6,40 @@ const PORT = 3333;
 
 var eventos = [];
 
-app.post("/", (req, res) => {
+// INSERT EVENT
+app.post("/events", (req, res) => {
+  const { name, poster, attractions, description, scheduled, number_tickets } =
+    req.body;
+
+  eventos.push({
+    name,
+    poster,
+    attractions,
+    description,
+    scheduled,
+    number_tickets,
+  });
+
+  return res.status(201).json({ eventos });
+});
+
+// FIND ALL EVENTS
+app.get("/events", (req, res) => {
   return res.status(200).json({ message: "sucess" });
 });
 
-app.get("/", (req, res) => {
+// FIND ONE EVENT
+app.get("/events/:_id", (req, res) => {
   return res.status(200).json({ message: "sucess" });
 });
 
-app.get("/:id", (req, res) => {
-  return res.status(200).json({ message: "sucess" });
+// UPDATE EVENT
+app.put("/events/:_id", (req, res) => {
+  return res.status(202).json({ message: "sucess" });
 });
 
-app.put("/:id", (req, res) => {
-  return res.status(200).json({ message: "sucess" });
-});
-
-app.delete("/:id", (req, res) => {
+// DELETE EVENT
+app.delete("/events/:_id", (req, res) => {
   return res.status(200).json({ message: "sucess" });
 });
 
