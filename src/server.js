@@ -45,12 +45,31 @@ app.get("/events/:_id", (req, res) => {
 
 // UPDATE EVENT
 app.put("/events/:_id", (req, res) => {
-  return res.status(202).json({ message: "sucess" });
+  const { _id } = req.params;
+
+  const { name, poster, attractions, description, scheduled, number_tickets } =
+    req.body;
+
+  const evento = eventos.find((evento) => evento._id === _id);
+
+  evento.name = name;
+  evento.poster = poster;
+  evento.attractions = attractions;
+  evento.description = description;
+  evento.scheduled = scheduled;
+  evento.number_tickets = number_tickets;
+
+  return res.status(202).json({ evento });
 });
 
 // DELETE EVENT
 app.delete("/events/:_id", (req, res) => {
-  return res.status(200).json({ message: "sucess" });
+  const { _id } = req.params;
+
+  const indexOfEvento = eventos.findIndex((evento) => evento._id === _id);
+  eventos.splice(indexOfEvento, 1);
+
+  return res.status(204).send();
 });
 
 app.listen(PORT, () => console.log(`server running in localhost:${PORT}`));
