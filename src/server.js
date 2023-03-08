@@ -9,6 +9,8 @@ app.use(express.json()); //sempre em cima das rotas
 
 var eventos = [];
 
+var reservas = [];
+
 // INSERT EVENT
 app.post("/events", (req, res) => {
   const { name, poster, attractions, description, scheduled, number_tickets } =
@@ -72,6 +74,66 @@ app.delete("/events/:_id", (req, res) => {
 
   const indexOfEvento = eventos.findIndex((evento) => evento._id === _id);
   eventos.splice(indexOfEvento, 1);
+
+  return res.status(204).send();
+});
+
+// INSERT BOOKING
+app.post("/bookings", (req, res) => {
+  const { owner_name, owner_email, number_tickets, event_id } = req.body;
+
+  const reserva = {
+    owner_name,
+    owner_email,
+    number_tickets,
+    event_id,
+    _id: randomUUID(),
+  };
+
+  reservas.push(reserva);
+
+  return res.status(201).json({ reservas });
+});
+
+// FIND ALL BOOKINGS
+app.get("/bookings", (req, res) => {
+  return res.status(200).json({ reservas });
+});
+
+// FIND ONE BOOKING
+app.get("/bookings/:_id", (req, res) => {
+  const { _id } = req.params;
+
+  const reserva = reservas.find((reserva) => reserva._id === _id);
+
+  if (!reserva) {
+    return res.status(404).json({ message: "BOOKING NOT FOUND" });
+  }
+
+  return res.status(200).json({ reserva });
+});
+
+// FIND ALL BOOKINGS BY EVENT
+app.get("/bookings/event/:_id", (req, res) => {
+  const { _id } = req.params;
+
+  const reservasEvento = reservas.filter(
+    (reservasEvento) => reservasEvento.event_id === _id
+  );
+
+  if (!reservasEvento) {
+    return res.status(404).json({ message: "BOOKINGS NOT FOUND" });
+  }
+
+  return res.status(200).json({ reservasEvento });
+});
+
+// DELETE BOOKING
+app.delete("/bookings/:_id", (req, res) => {
+  const { _id } = req.params;
+
+  const indexOfReserva = reservas.findIndex((reserva) => reserva._id === _id);
+  reservas.splice(indexOfReserva, 1);
 
   return res.status(204).send();
 });
