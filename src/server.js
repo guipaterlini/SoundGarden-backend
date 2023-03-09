@@ -1,15 +1,17 @@
 import express from "express";
 import { randomUUID } from "node:crypto";
+import routes from "./routes/routes.js";
 
 const app = express();
 
 const PORT = 3333;
 
 app.use(express.json()); //sempre em cima das rotas
+app.use(routes);
 
-var eventos = [];
+global.eventos = [];
 
-var reservas = [];
+global.reservas = [];
 
 // INSERT EVENT
 app.post("/events", (req, res) => {
@@ -32,9 +34,9 @@ app.post("/events", (req, res) => {
 });
 
 // FIND ALL EVENTS
-app.get("/events", (req, res) => {
-  return res.status(200).json({ eventos });
-});
+// app.get("/events", (req, res) => {
+//   return res.status(200).json({ eventos });
+// });
 
 // FIND ONE EVENT
 app.get("/events/:_id", (req, res) => {
