@@ -9,16 +9,16 @@ const PORT = 3333;
 app.use(express.json()); //sempre em cima das rotas
 app.use(routes);
 
-global.eventos = [];
+global.events = [];
 
-global.reservas = [];
+global.bookings = [];
 
 // INSERT EVENT
 app.post("/events", (req, res) => {
   const { name, poster, attractions, description, scheduled, number_tickets } =
     req.body;
 
-  const evento = {
+  const event = {
     _id: randomUUID(),
     name,
     poster,
@@ -28,27 +28,27 @@ app.post("/events", (req, res) => {
     number_tickets,
   };
 
-  eventos.push(evento);
+  events.push(event);
 
-  return res.status(201).json({ eventos });
+  return res.status(201).json({ events });
 });
 
 // FIND ALL EVENTS
 // app.get("/events", (req, res) => {
-//   return res.status(200).json({ eventos });
+//   return res.status(200).json({ events });
 // });
 
 // FIND ONE EVENT
 app.get("/events/:_id", (req, res) => {
   const { _id } = req.params;
 
-  const evento = eventos.find((evento) => evento._id === _id);
+  const event = events.find((event) => event._id === _id);
 
-  if (!evento) {
+  if (!event) {
     return res.status(404).json({ message: "EVENT NOT FOUND" });
   }
 
-  return res.status(200).json({ evento });
+  return res.status(200).json({ event });
 });
 
 // UPDATE EVENT
@@ -58,24 +58,24 @@ app.put("/events/:_id", (req, res) => {
   const { name, poster, attractions, description, scheduled, number_tickets } =
     req.body;
 
-  const evento = eventos.find((evento) => evento._id === _id);
+  const event = events.find((event) => event._id === _id);
 
-  evento.name = name;
-  evento.poster = poster;
-  evento.attractions = attractions;
-  evento.description = description;
-  evento.scheduled = scheduled;
-  evento.number_tickets = number_tickets;
+  event.name = name;
+  event.poster = poster;
+  event.attractions = attractions;
+  event.description = description;
+  event.scheduled = scheduled;
+  event.number_tickets = number_tickets;
 
-  return res.status(202).json({ evento });
+  return res.status(202).json({ event });
 });
 
 // DELETE EVENT
 app.delete("/events/:_id", (req, res) => {
   const { _id } = req.params;
 
-  const indexOfEvento = eventos.findIndex((evento) => evento._id === _id);
-  eventos.splice(indexOfEvento, 1);
+  const indexOfEvent = events.findIndex((event) => event._id === _id);
+  events.splice(indexOfEvent, 1);
 
   return res.status(204).send();
 });
@@ -84,7 +84,7 @@ app.delete("/events/:_id", (req, res) => {
 app.post("/bookings", (req, res) => {
   const { owner_name, owner_email, number_tickets, event_id } = req.body;
 
-  const reserva = {
+  const booking = {
     owner_name,
     owner_email,
     number_tickets,
@@ -92,50 +92,50 @@ app.post("/bookings", (req, res) => {
     _id: randomUUID(),
   };
 
-  reservas.push(reserva);
+  bookings.push(booking);
 
-  return res.status(201).json({ reservas });
+  return res.status(201).json({ bookings });
 });
 
 // FIND ALL BOOKINGS
 app.get("/bookings", (req, res) => {
-  return res.status(200).json({ reservas });
+  return res.status(200).json({ bookings });
 });
 
 // FIND ONE BOOKING
 app.get("/bookings/:_id", (req, res) => {
   const { _id } = req.params;
 
-  const reserva = reservas.find((reserva) => reserva._id === _id);
+  const booking = bookings.find((booking) => booking._id === _id);
 
-  if (!reserva) {
+  if (!booking) {
     return res.status(404).json({ message: "BOOKING NOT FOUND" });
   }
 
-  return res.status(200).json({ reserva });
+  return res.status(200).json({ booking });
 });
 
 // FIND ALL BOOKINGS BY EVENT
 app.get("/bookings/event/:_id", (req, res) => {
   const { _id } = req.params;
 
-  const reservasEvento = reservas.filter(
-    (reservasEvento) => reservasEvento.event_id === _id
+  const bookingsEvent = bookings.filter(
+    (bookingsEvent) => bookingsEvent.event_id === _id
   );
 
-  if (!reservasEvento) {
+  if (!bookingsEvent) {
     return res.status(404).json({ message: "BOOKINGS NOT FOUND" });
   }
 
-  return res.status(200).json({ reservasEvento });
+  return res.status(200).json({ bookingsEvent });
 });
 
 // DELETE BOOKING
 app.delete("/bookings/:_id", (req, res) => {
   const { _id } = req.params;
 
-  const indexOfReserva = reservas.findIndex((reserva) => reserva._id === _id);
-  reservas.splice(indexOfReserva, 1);
+  const indexOfBooking = bookings.findIndex((booking) => booking._id === _id);
+  bookings.splice(indexOfBooking, 1);
 
   return res.status(204).send();
 });
