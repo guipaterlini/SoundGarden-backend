@@ -1,10 +1,10 @@
 import { Router } from "express";
 import {
   createEvent,
-  deleteEvent,
+  deleteEventById,
   findAllEvents,
   findOneEventById,
-  updateEvent,
+  updateEventByID,
 } from "../controllers/events/events.controller.js";
 
 const routes = Router();
@@ -12,7 +12,7 @@ const routes = Router();
 routes.post("/events", createEvent);
 routes.get("/events", findAllEvents);
 routes.get("/events/:_id", findOneEventById);
-routes.put("/events/:_id", updateEvent);
-routes.delete("/events/:_id", deleteEvent);
+routes.put("/events/:_id", updateEventByID);
+routes.delete("/events/:_id", deleteEventById);
 
 export default routes;

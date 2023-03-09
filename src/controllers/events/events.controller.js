@@ -22,7 +22,9 @@ export const createEvent = (req, res) => {
 };
 
 export const findAllEvents = (req, res) => {
-  return res.status(200).json({ events: global.events });
+  const events = global.events;
+
+  return res.status(200).json({ events });
 };
 
 export const findOneEventById = (req, res) => {
@@ -39,7 +41,7 @@ export const findOneEventById = (req, res) => {
   return res.status(200).json({ event });
 };
 
-export const updateEvent = (req, res) => {
+export const updateEventByID = (req, res) => {
   const { _id } = req.params;
 
   const { name, poster, attractions, description, scheduled, number_tickets } =
@@ -59,8 +61,10 @@ export const updateEvent = (req, res) => {
   return res.status(202).json({ event });
 };
 
-export const deleteEvent = (req, res) => {
+export const deleteEventById = (req, res) => {
   const { _id } = req.params;
+
+  const events = global.events;
 
   const indexOfEvent = events.findIndex((event) => event._id === _id);
   events.splice(indexOfEvent, 1);
